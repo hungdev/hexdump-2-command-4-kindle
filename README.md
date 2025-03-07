@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hexdump to Command Converter for Kindle
 
-## Getting Started
+This is a simple tool to convert hexdump output to a command that can be used to send to Kindle via SSH.
+it should be copied straight like example below:
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+example hexdump input:
+```sh
+00000000  3a 2b bf 67 d6 7e 07 00  01 00 68 00 01 00 00 00  |:+.g.~....h.....|
+00000010  3a 2b bf 67 d9 7e 07 00  00 00 00 00 00 00 00 00  |:+.g.~..........|
+00000020  3a 2b bf 67 eb 66 09 00  01 00 68 00 00 00 00 00  |:+.g.f....h.....|
+00000030  3a 2b bf 67 ed 66 09 00  00 00 00 00 00 00 00 00  |:+.g.f..........|
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+output like this:
+```sh
+printf "\x3a\x2b\xbf\x67\xd6\x7e\x07\x00\x01\x00\x68\x00\x01\x00\x00\x00" > /dev/input/event2
+printf "\x3a\x2b\xbf\x67\xd9\x7e\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00" > /dev/input/event2
+printf "\x3a\x2b\xbf\x67\xeb\x66\x09\x00\x01\x00\x68\x00\x00\x00\x00\x00" > /dev/input/event2
+printf "\x3a\x2b\xbf\x67\xed\x66\x09\x00\x00\x00\x00\x00\x00\x00\x00\x00" > /dev/input/event2
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+or
+```sh
+echo -ne "\x3a\x2b\xbf\x67\xd6\x7e\x07\x00\x01\x00\x68\x00\x01\x00\x00\x00" | dd of=/dev/input/event2 bs=16
+echo -ne "\x3a\x2b\xbf\x67\xd9\x7e\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00" | dd of=/dev/input/event2 bs=16
+echo -ne "\x3a\x2b\xbf\x67\xeb\x66\x09\x00\x01\x00\x68\x00\x00\x00\x00\x00" | dd of=/dev/input/event2 bs=16
+echo -ne "\x3a\x2b\xbf\x67\xed\x66\x09\x00\x00\x00\x00\x00\x00\x00\x00\x00" | dd of=/dev/input/event2 bs=16
+```
